@@ -9,16 +9,29 @@ import os,sys,random
 from HTMLParser import HTMLParser
 import urllib2
 args= sys.argv
-test=[]
+test=[104]
 content=""
+arg=""
 
 class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
+        global arg
         if tag=="meta" and attrs[0]==('name', 'description'):
             try:
                 global content
                 content= attrs[1][1]
             except: pass
+
+        start= "{\'value\': \'"+arg+"\'"
+        stop="\'value\'"
+        if tag=="div":
+            for each in attrs:
+                if each[0]=='ng-init':
+                    parts= each[1].split(",")
+                    flag= False
+                    print start
+                    for line in parts:
+                        print line
 
 def isInternetOn(link,attempt):
     try:
@@ -29,7 +42,7 @@ def isInternetOn(link,attempt):
         print "XXXX  Cant connect: Attempt ",attempt
         return False
 
-def writer(name, cont, link):
+def writer(name, cont, link, arg2):
     if "LeetCode Online Judge" in cont:
         cont= "Restricted question"
         print cont
@@ -44,7 +57,9 @@ def writer(name, cont, link):
     fout.write("\n\"\"\"")
     fout.close()
 
-def populate(filename, link):
+def populate(filename, link, arg2):
+    global arg
+    arg= arg2
     flag= False
     for i in range(4):
         if isInternetOn(link,i):
@@ -57,24 +72,14 @@ def populate(filename, link):
     #print html
     parser= MyHTMLParser()
     print "--------"
+    #parser.feed(html)
     try:
         parser.feed(html)
-        writer(filename, content, link)
+        writer(filename, content, link, arg2)
     except: print "parser error"
 
-
-
-
-def main():
-    print "****************"
-    try: arg1= args[1]
-    except: arg1=""
-    try: arg2= args[2]
-    except: arg2=""
-    probdict={}
-    easy={}
-    med={}
-    hard={}
+def randomSelector(arg1,arg2):
+    probdict={}; easy={}; med={}; hard={}
     path= sys.path[0]
     fin = open(path+"/misc/all.txt","r")
     lines= fin.readlines()
@@ -112,15 +117,28 @@ def main():
     link= link.lower()
     link= link.replace(" ","-")
     httplink= "https://leetcode.com/problems/"+link
-    print httplink
-    cmd="atom ./test/"+str(k)+"_"+link+".txt"
-    print "Initiating... "+cmd
-    if "cmd" in arg2 or "at" in arg2:
-        os.system(cmd)
-        populate(cmd.split()[1], httplink)
-    #testing
-    populate(cmd.split()[1], httplink)
+    return k,link, httplink
 
+def main():
+    print "****************"
+    try: arg1= args[1] # easy, medium or hard?
+    except: arg1="help" # keep easy as default
+    if "-h" in arg1 or "help" in arg1:
+        print "\nCommand->  python captain.py level(easy/med/hard) precode with language(python/java/cpp)"
+        return
+    try: arg2= args[2] # initiate prewritten code?
+    except: arg2=""
+
+    num, name, link= randomSelector(arg1, arg2) # return random number, name and link of problem
+
+    cmd="atom ./test/"+str(num)+"_"+name+".txt"
+    print "Initiating... "+cmd
+    arg2= 'py' ## test
+    allowed_arg2=['python','java','cpp','']
+    for alw in allowed_arg2:
+        if arg2 not in alw: continue
+        populate(cmd.split()[1], link, alw)
+        os.system(cmd)
 
 if __name__ == '__main__':
     main()
