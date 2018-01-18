@@ -13,37 +13,24 @@ If there is a tie, return the smaller one as answer.
 
 """
 Solution time complexity:
-conversion and palin check O(l)...l is length of n
-range of checks - O(10^(l/2))
-So overall- O(10^l/2)
 """
 
 
 class Solution(object):
-    def isPalin(self,num):
-	"""
-	:type num: int
-	:rtype: bool 
-	"""
-        n= str(num)
-        l= len(n)
-        for i in range(l/2):
-            if n[i]!=n[l-1-i]: 
-                return False
-        return True
     
     def nearestPalindromic(self, n):
         """
         :type n: str
         :rtype: str
         """
-        num= int(n)
-        i = 1
-        while True:
-            if self.isPalin(num-i): return str(num-i)
-            if self.isPalin(num+i): return str(num+i)
-            i=i+1
-
+	l = len(n)
+	left= n[0:(l+1)/2]
+	if l%2==0:
+		opt1= left+ left[::-1]
+		return opt1	
+	else:
+		opt1= left+ (left[0:-1])[::-1]
+		return opt1
 
 if __name__=="__main__":
 	obj= Solution()
