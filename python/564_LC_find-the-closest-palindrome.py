@@ -17,6 +17,14 @@ Solution time complexity:
 
 
 class Solution(object):
+
+    def createPalindrome(self, n, type):
+        """
+        """
+        if type=="even":
+            return n+n[::-1]
+        else:
+            return n+(n[0:-1])[::-1]
     
     def nearestPalindromic(self, n):
         """
@@ -25,12 +33,26 @@ class Solution(object):
         """
 	l = len(n)
 	left= n[0:(l+1)/2]
+        opt1=""
+        opt2=""
 	if l%2==0:
-		opt1= left+ left[::-1]
-		return opt1	
+		opt1= self.createPalindrome(left,"even")
+                if n>opt1:
+                        newleft= str( int(left)+1)
+                        if len(newleft)!=len(left):
+                                opt2= self.createPalindrome(newleft,"odd")
+                        else:
+                                opt2= self.createPalindrome(newleft,"even")
 	else:
-		opt1= left+ (left[0:-1])[::-1]
+		opt1= self.createPalindrome(left, "odd")
+
 		return opt1
+        
+        if n==opt2: return opt1
+        if n==opt1: return opt2
+        if  abs(int(opt2)-int(n)) < abs(int(opt1)-int(n)):
+            return opt2
+        return opt1
 
 if __name__=="__main__":
 	obj= Solution()
