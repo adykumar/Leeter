@@ -20,8 +20,11 @@ class Solution(object):
 
     def createPalindrome(self, n, type):
         """
+	:p-type n: str
+	:p-type type: str ["even"/"odd"]
+	:r-type str
         """
-        if type=="even":
+        if type==0:  # even number of digits
             return n+n[::-1]
         else:
             return n+(n[0:-1])[::-1]
@@ -35,19 +38,23 @@ class Solution(object):
 	left= n[0:(l+1)/2]
         opt1=""
         opt2=""
-	if l%2==0:
-		opt1= self.createPalindrome(left,"even")
-                if n>opt1:
-                        newleft= str( int(left)+1)
-                        if len(newleft)!=len(left):
-                                opt2= self.createPalindrome(newleft,"odd")
-                        else:
-                                opt2= self.createPalindrome(newleft,"even")
-	else:
-		opt1= self.createPalindrome(left, "odd")
+	
+	opt1= self.createPalindrome(left,l%2)
+	if n==opt1:
+		newleft= str( int(left)+1)
+		if len(newleft)!=len(left):
+			if l%2==0:
+               			opt1= self.createPalindrome(newleft,1)
+			else:
+				opt1= self.createPalindrome(newleft[0:-1],0)
+		else:
+			opt1= self.createPalindrome(newleft,l%2)
 
-		return opt1
-        
+        if n>opt1:
+                newleft= str( int(left)+1)
+	else:
+		newleft= str( int(left)-1)
+	opt2= self.createPalindrome(newleft,l%2) 
         if n==opt2: return opt1
         if n==opt1: return opt2
         if  abs(int(opt2)-int(n)) < abs(int(opt1)-int(n)):
@@ -56,6 +63,6 @@ class Solution(object):
 
 if __name__=="__main__":
 	obj= Solution()
-	samples= ["123","123678", "123456789", "4110099"]
+	samples= ["9","11","123","123678", "123456789", "4110099","99999"]
 	for sample in samples:
-		print sample, "->", obj.nearestPalindromic(sample)
+		print sample, "--", obj.nearestPalindromic(sample)
