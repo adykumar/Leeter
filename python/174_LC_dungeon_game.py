@@ -33,23 +33,38 @@ class Solution(object):
             for j in range(cols):
                 inner.append([0,0])
             dp.append(inner)
-        
+
+
         for i in range(rows):
             for j in range(cols):
-                top=  [-sys.maxsize,-sys.maxsize]
-                left= [-sys.maxsize,-sys.maxsize]
-                if i-1>=0: top=  dp[i-1][j]
-                if j-1>=0: left= dp[i][j-1]
-                if top[0]>left[0]
-       
-	for i in range(rows):
-            for j in range(cols):
-                print dungeon[i][j],
+		if i==0 and j==0:
+			dp[0][0]= [dungeon[0][0], dungeon[0][0]]
+			continue
+                top=  [-sys.maxsize,0]
+                left= [-sys.maxsize,0]
+                if i-1>=0: 
+			top=  dp[i-1][j]
+			print "t",
+                if j-1>=0: 
+			left= dp[i][j-1]
+			print "l",
+		src= [0,0]
+                if top[0]>left[0]:
+			src= top
+		else:
+			src= left
+       		dp[i][j][1]= src[0]+dungeon[i][j]
+		dp[i][j][0]= min(dp[i][j][1], src[0])
+		print i,j,"--",top, left, src, "--",dungeon[i][j],"**",dp[i][j]
+	
+	for k in range(rows):
+            for l in range(cols):
+                print dungeon[k][l],
             print ""
 	print ""
-        for i in range(rows):
-            for j in range(cols):
-                print dp[i][j],
+        for m in range(rows):
+            for n in range(cols):
+                print dp[m][n],
 	    print ""
 	return "ZZZ"
 
