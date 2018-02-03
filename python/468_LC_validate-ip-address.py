@@ -34,7 +34,15 @@ Explanation: This is neither a IPv4 address nor a IPv6 address.
 """
 
 """
+Things to look for:
+ipv4:  -0 in a segment like 10.-0.1.1
+ipv4:  starts with 0 like 10.02.11.11
+ipv4:  non numerics in the segments 1a2.100.34.1
+ipv6:  characters beyond hex
+ipv6:  no chars between ::  like 0a:11:1234:::1d:6b:cab
 
+
+Complexity: O(n) where n in length of the address
 """
 
 class Solution(object):

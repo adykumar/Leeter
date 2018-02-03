@@ -38,6 +38,10 @@ Space-
 """
 
 class Solution(object):
+    def pyramid(self, bottom, allowed, level):
+	"""
+	"""
+	
     def pyramidTransition(self, bottom, allowed):
         """
         :type bottom: str
