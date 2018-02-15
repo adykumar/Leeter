@@ -22,7 +22,7 @@ class Solution(object):
         :rtype: List[int]
         """
 	result= []
-	current= 1
+	left
 	odict= {} # for last occurence
 	for j in range(len(S)):
 		odict[each]= j
