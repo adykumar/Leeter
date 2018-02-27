@@ -13,7 +13,13 @@ Note:
 S will have length in range [1, 500].
 S will consist of lowercase letters ('a' to 'z') only.
 """
+"""
+Complexity Analysis:
 
+The list has to be scanned twice. First for identifying the last occurence of each letter. Second for creating the batches so that same letters are in same groups
+Time complexity - O(2n) or O(n)
+Space - O(1)
+"""
 
 class Solution(object):
     def partitionLabels(self, S):
@@ -22,19 +28,20 @@ class Solution(object):
         :rtype: List[int]
         """
 	result= []
-	left
-	odict= {} # for last occurence
-	for j in range(len(S)):
-		odict[each]= j
-
+	dict= {}
 	for i in range(len(S)):
-		if i== odict[S[i]]:
-			result.append(current)
-			current =1
-		else:
-			current= odict[S[i]]-i
-			i= odict[S[i]]+1
-	
+		dict[S[i]]= i   # save last occurence of each letter in dict
+	limit= 0
+	current= 0
+	for i in range(len(S)):
+		current= current+ 1
+		limit= max(limit, dict[S[i]])   # set limit as last occurence for current ele being handled
+		if i>= limit:
+			result.append(current)  # if the current iteration reaches the limit, it means that no ele in this group occurs outside
+			current= 0
+	return result
+				
+
 if __name__=="__main__":
 	obj= Solution()
 	testcases= ["ababcbacadefegdehijhklij", "lolakutty","aaabaaa","abcdef"]
