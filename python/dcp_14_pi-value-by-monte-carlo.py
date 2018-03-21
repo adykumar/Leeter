@@ -11,16 +11,12 @@ from random import *
 class Solution(object):
 	def piValue(self, n):
 		inside= 0.0
-		outside= 0.0
 		for i in range(n):
 			x= uniform(-1,1)
 			y= uniform(-1,1)
-			if (x*x)+(y*y)>1:
-				outside+=1
-			else:
+			if (x*x)+(y*y)<1:
 				inside+=1
-		print inside, outside
-		pi= (4*inside)/(inside+outside)
+		pi= (4*inside)/n
 		return pi
 			
 
