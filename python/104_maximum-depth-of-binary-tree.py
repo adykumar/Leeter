@@ -1,15 +1,9 @@
 """
-
-NOT WORKING
-
+WORKING....
 Given a binary tree, find its maximum depth.
-
 The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
-
 Note: A leaf is a node with no children.
-
 Example:
-
 Given binary tree [3,9,20,null,null,15,7],
 
     3
@@ -31,19 +25,21 @@ class Solution(object):
     def createTree(self, treelist):
         root= TreeNode(treelist[0])
         q= queue.Queue(maxsize= len(treelist))
-        q.put = root
+        q.put(root)
         i = 1
-        while i<len(treelist):
+        while True:
+            if i>= len(treelist): break
             node= q.get()
-            print node.val
             if treelist[i] != "null":
                 node.left= TreeNode(treelist[i])
                 q.put(node.left)
             i+=1
+            if i>= len(treelist): break
             if treelist[i] != "null":
                 node.right= TreeNode(treelist[i])
                 q.put(node.right)
             i+=1
+
         return root
 
     def maxDepth(self, root):
@@ -51,7 +47,7 @@ class Solution(object):
         return max( self.maxDepth(root.left)+1, self.maxDepth(root.right)+1 )
 
 if __name__=="__main__":
-    testcases= [[3,9,20,"null","null",15,7], [1], [1,"null", 3]]
+    testcases= [[3,9,20,"null","null",15,7, 1, 1, 3], [1], [1,"null", 3]]
     obj= Solution()
     for test in testcases:
         root= obj.createTree(test)
