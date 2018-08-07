@@ -31,6 +31,7 @@ class Node(object):
 
 class Solution(object):
     def createLL(self, lis):
+        if len(lis)<2: return
         head= Node(lis[0])
         p= head
         for each in lis[1:]:
